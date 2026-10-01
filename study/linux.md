@@ -10,5 +10,9 @@
 
 ### What I learned
 
-Git is used to track changes in a project.
-GitHub stores and shares Git repositories online.
+git status:             Check changes 
+git add . :             Stage chages
+git commit -m "메모" :  Commit changes
+git push  :             Upload changes
+
+
