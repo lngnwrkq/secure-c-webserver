@@ -89,7 +89,7 @@
 + Input data while the program is running
 
 - ./qkrwngnl hello
-  + "hello" is passed through argv(argc: 2 argv[0]: ./qkrwngnl, argv[1]: hello)
+  + "hello" is passed through argv(argc: 2 argv[0]:, ./qkrwngnl, argv[1]: hello)
 
 - ./qkrwngnl < input.txt
   +  The contents of input.txt are passed through stdin
