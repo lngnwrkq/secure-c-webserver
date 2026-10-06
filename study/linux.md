@@ -89,10 +89,10 @@
 + Input data while the program is running
 
 - ./qkrwngnl hello
-+ "hello" is passed through argv(argc: 2 argv[0]: ./qkrwngnl, argv[1]: hello)
+  + "hello" is passed through argv(argc: 2 argv[0]: ./qkrwngnl, argv[1]: hello)
 
 - ./qkrwngnl < input.txt
-+  The contents of input.txt are passed through stdin
+  +  The contents of input.txt are passed through stdin
 
 - Shell: Interprets user commands and runs programs
 - Kernel: Manages CPU, Memory, Disk, Network, and Hardware
