@@ -108,6 +108,41 @@
 - Redirected the stdout of head directly into another file
 - Redirected stdout and stderr to files
 - Understood the relationship between Shell, Kernel, and Hardware
+---------------------
+## 2026-10-14 ~ 2026-10-15
+
+### Today
+- shell script
+- struct of directory(/home, /etc)
+- process, ps aux, htop, htop
+- locate, find
+- background, foreground, fg(%), jobs
+- Daemon
+- Cron
+
+### What I learned
+- Run multiple commands using a shell script
+- /home: User home directory, /etc: System settings, /root: Root
+/bin: Basic commands
+- ps aux: Show all running processes
+- htop: Show processes and system usage in real time
+- locate: Find files using the plocate database
+- find: Search files directly in directories(-type f,d)
+- whereis: Find command, source and manual 
+- foreground: Run a process in the terminal
+- background: Run a process without blocking the terminal
+- jobs(Show background), fg(Move a job to foreground), bg(Resume a stopped job in background)
+- Daemon: Run a process in background to provide a service(ex: cron)
+- Cron: Run commands periodically
+(min, hour, day, month, weekday, commands)
+
+### Practice
+- Learned how CPU, RAM, and SSD/HDD work when running a program 
+- Installed Apache2 web server
+- Used ps aux | grep apache2 to check running Apache2 process
+(apache2: respond http request)
+- Made a cron job to save the current date and time to date.log every minute
+- Used tail to check the saved logs
 
 
 
