@@ -143,6 +143,42 @@
 (apache2: respond http request)
 - Made a cron job to save the current date and time to date.log every minute
 - Used tail to check the saved logs
+---------------------
+## 2026-10-16
+
+### Today
+- Add user(id, who, root)
+- Permission(rwx, chmod)
+- How the Internet works(Client, Server, DNS, Domain, IP address)
+- Public address, Private address
+- apache2, elinks
+- Configuration(/etc)
+
+### What I learned
+- id: Show user ID and group ID
+- who: Show current id
+- Root: Super User
+- Permission(r: read, w: write, x: execute | ex rw-r--r--: User can read and write, group, other can read)
+- Internet: A global network of connected networks
+- Network: Connected devices 
+- Server: Receive reuests and send responses
+- IP address: Address used for network communication
+- Domain: Web name
+- DNS: Find the IP address of a domain name
+- /etc: Store system configuration files
+- localhost: Hostname that refers to my own computer
+- apache2: Web Server
+- elinks: Web browser
+
+### Practice
+- Made files and directories and changed permissions using chmod
+- Used the root account
+- Studied how the Internet and networks work
+- Sent HTTP requests and received responses using elinks and Apache2 on my computer
+- Checked my computer's public and private IP addresses
+- Checked the apache2 configuration file in /etc to find the DocumnetRoot
+- Renamed a web file(Index.html) and checked how the server responded
+- Found the Apache2 log file and monitored logs in real time using tail -f
 
 
 
