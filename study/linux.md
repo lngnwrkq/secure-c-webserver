@@ -179,6 +179,40 @@
 - Checked the apache2 configuration file in /etc to find the DocumnetRoot
 - Renamed a web file(Index.html) and checked how the server responded
 - Found the Apache2 log file and monitored logs in real time using tail -f
+---------------------
+## 2026-10-17 ~ 2026-10-18
+
+### Today
+- SSH
+- Port, Port forwarding
+- Domain, DNS
+
+### What I learned
+## SSH
+- SSH: A secure protocol for remotely accessing and controlling another computer.
+
+## Port / Port Fowarding
+- Port: A number used to identify a network sercvice
+- Port Forwarding: A technique that forwards incoming connections from a router's public ip and port to a specific pricate IP and port
+(Devices in a private network usually cannot be directly accessed from the public internet. a router uses a port forwarding rule to redirect incoming connections to an internal sercer)
+- Default gateway: A router that forwards packets to other networks when no more specific route exists
+- Nat: A technique that translates IP addresses in network packets
+- Network Flow: External Client -> Public ip -> Router(Port Forwardinf) -> Private IP -> Web server
+
+## Domain/DNS
+- Domain: A name used to identify an internet resource. (ex google.com)
+- DNS: A system that translates domain names into IP addresses
+- /etc/hosts: A local file that maps domain names to IP addresses.(Hacker usually use this)
+- Root DNS Server: Directs queries to the appropriate TLD DNS Servers
+- TLD DNS Server: Provides information about  DNS servers for domains under a TLD(ex. .com .ga)
+- Process: enter a domain -> Check hosts -> if no matching entry is found, find the configured DNS resolver -> if the resolver has no answer, query a Root DNS server -> Query a .com TLD DNS Server -> Query the autoritative DNS server
+
+### Practice
+- Used ip route to find my default gateway IP.
+- Tried to access the gateway IP but failed.
+- Found out that my WSL2 uses a virtual network.
+- Learned that the default gateway was my Windows virtual gateway, not the actual router.
+- Understood that Windows uses NAT to change Ubuntu's source IP to the Windows private IP before sending packets to the router.
 
 
 
