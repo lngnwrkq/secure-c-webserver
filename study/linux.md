@@ -213,7 +213,105 @@
 - Found out that my WSL2 uses a virtual network.
 - Learned that the default gateway was my Windows virtual gateway, not the actual router.
 - Understood that Windows uses NAT to change Ubuntu's source IP to the Windows private IP before sending packets to the router.
+---------------------
+## 2026-10-20
 
+### Today
+
+- SSH key-based authentication
+- ssh-keygen, ssh-copy-id
+- Public Key, Private Key
+- RSA
+- Euler's Phi Function
+- Public Exponent, Private Exponent
+- Digital Signature
+
+### What I learned
+
+- SSH key-based authentication allows login without entering a password every time
+
+- ssh-keygen:
+  - Generates Public Key and Private Key
+  - Stores keys under the `.ssh` directory
+
+- Private Key:
+  - Must stay on the client
+  - Must not be sent to the server
+
+- Public Key:
+  - Can be copied to the server
+  - Stored in `~/.ssh/authorized_keys`
+
+- ssh-copy-id:
+  - Copies the client's Public Key to the server's `authorized_keys`
+
+- RSA starts by choosing two different large prime numbers
+
+- Example:
+  - p = 61
+  - q = 53
+
+- n = p × q
+
+- Example:
+  - n = 61 × 53
+  - n = 3233
+
+- RSA is secure because it is very difficult to factor a very large number `n` back into its original prime numbers `p` and `q`
+
+- Euler's Phi Function:
+  - Counts how many numbers are relatively prime to n
+
+- If p is a prime number:
+  - φ(p) = p - 1
+
+- If:
+  - n = p × q
+
+- Then:
+  - φ(n) = (p - 1)(q - 1)
+
+- Example:
+  - φ(3233) = (61 - 1)(53 - 1)
+  - φ(3233) = 60 × 52
+  - φ(3233) = 3120
+
+- e:
+  - Public Exponent
+  - Must satisfy `1 < e < φ(n)`
+  - e and φ(n) must be relatively prime
+
+- Example:
+  - e = 17
+  - gcd(17, 3120) = 1
+
+- d:
+  - Private Exponent
+  - Must satisfy `e × d ≡ 1 (mod φ(n))`
+
+- Example:
+  - e = 17
+  - d = 2753
+
+- Public Key:
+  - (n, e)
+
+- Private Key:
+  - (n, d)
+
+- Digital Signature:
+  - Client uses the Private Key to create a signature
+  - Server uses the Public Key to verify the signature
+  - Private Key itself is never sent to the server
+
+- In SSH authentication:
+  - The server already has the client's Public Key in `authorized_keys`
+  - The client proves that it owns the matching Private Key
+  - The client signs SSH session-related data with the Private Key
+  - The server verifies the signature with the Public Key
+  - If verification succeeds, authentication is accepted
+
+- Encryption and Digital Signature are different
 
 
 
