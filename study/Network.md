@@ -240,3 +240,186 @@
 - Learned PDU of each layer
 - Traced Encapsulation and Decapsulation
 - Compared Traffic, Utilization, Bandwidth and Throughput
+-------------
+## 2026-10-27
+
+### Today
+
+- Ethernet
+- Ethernet Cable Types
+- Twisted Pair Cable, Coaxial Cable, Optical Fiber
+- SMF, MMF
+- Ethernet Frame
+- NIC
+- Hub, CSMA/CD
+- Switch
+- MAC Address Table
+- Learning, Flooding, Forwarding, Filtering, Aging
+- VLAN
+- Access Port, Trunk Port
+- Port-based VLAN, MAC-based VLAN
+
+### What I learned
+
+- Ethernet:
+  - A network technology used mainly in wired LANs
+  - Works at the Physical and Data Link Layers
+
+- Ethernet Name:
+  - 10: 10 Mbps
+  - 10G: 10 Gbps
+  - BASE: Baseband transmission
+  - T: Twisted Pair Cable
+  - Example: 10BASE-T, 10GBASE-SR
+
+- Twisted Pair Cable:
+  - Copper cable with twisted wires
+  - Commonly uses an RJ-45 connector
+  - Twisting wires helps reduce noise
+
+- Shielding Types:
+  - UTP: Unshielded Twisted Pair
+  - STP: Braided Twisted Pair
+  - FTP: Foil Twisted Pair
+  - S/FTP: Outer braided shield and foil around each pair
+
+- CAT (Category):
+  - Shows the performance standard of a twisted pair cable
+  - Examples: Cat5e, Cat6, Cat6a
+
+- Optical Fiber:
+  - Uses light signals to send data
+  - Used for high-speed and long-distance communication
+
+- SMF (Single Mode Fiber):
+  - Has a small core
+  - Supports a single light mode
+  - Mainly used for long-distance communication
+
+- MMF (Multi Mode Fiber):
+  - Has a larger core
+  - Supports multiple light modes
+  - Mainly used for shorter distances
+
+- Ethernet Frame:
+  - A data unit used at the Data Link Layer
+  - Contains MAC addresses, Data and FCS
+
+- Ethernet Frame Structure:
+  - Preamble: 7 Bytes
+  - SFD: 1 Byte
+  - Destination MAC: 6 Bytes
+  - Source MAC: 6 Bytes
+  - Type/Length: 2 Bytes
+  - Data: 46-1500 Bytes (including Padding)
+  - FCS: 4 Bytes
+
+- Preamble:
+  - Repeats the bit pattern 10101010
+  - Helps the receiver synchronize with the signal
+
+- SFD (Start Frame Delimiter):
+  - Marks the start of the Ethernet Frame
+
+- MAC Address:
+  - Identifies a network interface
+  - Used to send Frames on a local network
+
+- Type/Length:
+  - Type: Shows the protocol inside the Data field
+  - Length: Shows the data length
+
+- Data / Payload:
+  - Contains data from the upper layer
+  - Usually contains an IP Packet
+  - Maximum size is normally 1500 Bytes
+  - Padding is added when the data is too small
+
+- FCS (Frame Check Sequence):
+  - Uses CRC to detect errors
+  - The receiver checks the FCS
+  - A damaged Frame is normally discarded
+
+- NIC (Network Interface Card):
+  - Connects a computer to a network
+  - Has a MAC Address
+  - Sends and receives network signals and Frames
+
+- Hub:
+  - Works at the Physical Layer
+  - Sends received signals to other ports
+  - Does not use MAC Addresses
+  - Uses Half-Duplex communication
+  - Collisions can happen
+
+- CSMA/CD:
+  - Used in shared Half-Duplex Ethernet
+  - Checks whether the medium is being used
+  - Detects collisions
+  - Stops transmission and tries again after a random wait
+
+- Switch:
+  - Mainly works at the Data Link Layer
+  - Uses MAC Addresses to forward Frames
+  - Supports Full-Duplex communication
+  - Uses a MAC Address Table
+
+- MAC Address Table:
+  - Stores MAC Addresses and their connected ports
+  - Helps the Switch find the correct output port
+
+- Learning:
+  - The Switch learns the Source MAC Address and incoming port
+
+- Flooding:
+  - Sends a Frame to other ports in the same VLAN when the Destination MAC is unknown
+
+- Forwarding:
+  - Sends a Frame to the correct port using the MAC Address Table
+
+- Filtering:
+  - Does not send a Frame to ports that do not need it
+
+- Aging:
+  - Removes old dynamic MAC Address entries from the table
+  - Helps the Switch update its information
+
+- VLAN (Virtual Local Area Network):
+  - Divides one physical LAN into separate logical LANs
+  - Each VLAN has its own Broadcast Domain
+  - Communication between different VLANs normally needs Routing
+
+- Port-based VLAN:
+  - Assigns a VLAN to each Switch port
+
+- Access Port:
+  - Usually belongs to one VLAN
+  - Commonly used to connect PCs
+
+- Trunk Port:
+  - Carries Frames from multiple VLANs through one link
+  - Commonly used between Switches
+  - Uses VLAN Tags to identify VLANs
+
+- 802.1Q VLAN Tag:
+  - Adds 4 Bytes to an Ethernet Frame
+  - Placed between Source MAC and Type/Length
+  - Identifies the VLAN of a Frame
+
+- MAC-based VLAN:
+  - Assigns VLANs based on MAC Addresses
+  - A device can keep its VLAN when it moves to another port if the Switch is configured to support it
+
+### Practice
+
+- Studied Ethernet and different cable types
+- Compared Twisted Pair and Optical Fiber
+- Compared SMF and MMF
+- Drew the Ethernet Frame structure and checked each field size
+- Learned how FCS detects errors
+- Compared NIC, Hub and Switch
+- Studied how CSMA/CD handles collisions
+- Traced how a Switch learns MAC Addresses
+- Understood Learning, Flooding, Forwarding, Filtering and Aging
+- Studied how VLANs divide a Broadcast Domain
+- Compared Port-based VLAN and MAC-based VLAN
