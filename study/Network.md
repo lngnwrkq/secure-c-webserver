@@ -423,3 +423,155 @@
 - Understood Learning, Flooding, Forwarding, Filtering and Aging
 - Studied how VLANs divide a Broadcast Domain
 - Compared Port-based VLAN and MAC-based VLAN
+-------------
+## 2026-10-28
+
+### Today
+
+- Network Layer
+- MAC Address vs IP Address
+- IPv4 and IPv6
+- IPv4 Header
+- IP Fragmentation
+- MTU (Maximum Transmission Unit)
+- IPv6 Header
+- ARP (Address Resolution Protocol)
+- Communication Between Different LANs
+
+### What I learned
+
+- Network Layer:
+  - The third layer of the OSI model
+  - Uses IP addresses to send packets between networks
+  - Finds a path to the destination network
+
+- MAC Address vs IP Address:
+  - MAC Address: Used to deliver frames on a local link
+  - IP Address: Used to identify the source and destination across networks
+  - A MAC Address is usually assigned to a network interface
+  - An IP Address can be set manually or assigned by DHCP
+
+- IP (Internet Protocol):
+  - A protocol used at the Network Layer
+  - Uses IP addresses to deliver packets
+  - Two main versions: IPv4 and IPv6
+
+- IPv4:
+  - Uses 32-bit IP addresses
+  - Usually written in dotted decimal format
+  - Example: 192.168.0.10
+  - Has about 4.3 billion possible addresses
+  - Supports routing and fragmentation
+
+- MTU (Maximum Transmission Unit):
+  - The maximum size of a packet that a network link can carry
+  - A common Ethernet MTU is 1500 Bytes
+
+- IPv4 Header:
+  - Minimum size: 20 Bytes
+  - Maximum size: 60 Bytes
+  - Contains information needed to deliver an IP packet
+
+- IPv4 Header Fields:
+  - Version (4 bits): Shows the IP version
+  - IHL (4 bits): Shows the header length
+  - Service Type (8 bits): Shows packet priority and congestion information
+  - Total Length (16 bits): Shows the total packet size
+  - Identification (16 bits): Helps identify packet fragments
+  - Flags (3 bits): Controls fragmentation
+  - Fragment Offset (13 bits): Shows the position of a fragment
+  - TTL (8 bits): Limits how many routers a packet can pass
+  - Protocol (8 bits): Identifies the next protocol, such as TCP or UDP
+  - Header Checksum (16 bits): Detects errors in the IP header
+  - Source IP (32 bits): Source IP address
+  - Destination IP (32 bits): Destination IP address
+  - Options: Additional information
+  - Padding: Makes the header length a multiple of 4 Bytes
+
+- IP Fragmentation:
+  - Divides a large IPv4 packet into smaller fragments when needed
+  - Each fragment has its own IP header
+  - The destination host puts the fragments back together
+
+- Fragmentation Flags:
+  - DF (Don't Fragment): Prevents fragmentation when set to 1
+  - MF (More Fragments): Shows whether more fragments follow
+  - Fragment Offset: Shows where a fragment belongs in the original packet
+
+- TTL (Time To Live):
+  - Decreases by 1 at each router
+  - A packet is discarded when the TTL reaches 0
+  - Prevents packets from moving around the network forever
+
+- IPv6:
+  - Uses 128-bit IP addresses
+  - Written in hexadecimal format
+  - Usually has eight groups of 16 bits
+  - Provides a much larger address space than IPv4
+  - Has a fixed 40-Byte base header
+
+- IPv6 Header Fields:
+  - Version (4 bits): Shows the IP version
+  - Traffic Class (8 bits): Shows packet priority and congestion information
+  - Flow Label (20 bits): Identifies packets in the same flow
+  - Payload Length (16 bits): Shows the payload size
+  - Next Header (8 bits): Identifies the next header or protocol
+  - Hop Limit (8 bits): Limits how many routers a packet can pass
+  - Source IP (128 bits): Source IPv6 address
+  - Destination IP (128 bits): Destination IPv6 address
+
+- IPv4 vs IPv6:
+  - IPv4 uses 32-bit addresses
+  - IPv6 uses 128-bit addresses
+  - IPv4 has a variable header size
+  - IPv6 has a fixed 40-Byte base header
+  - IPv6 does not have a Header Checksum
+  - IPv6 uses Extension Headers for extra information
+  - IPv6 routers do not fragment packets
+
+- ARP (Address Resolution Protocol):
+  - Finds a MAC Address using an IPv4 Address
+  - Used on a local network
+  - Helps a host send an Ethernet Frame to the correct device
+
+- ARP Process:
+  - A host sends an ARP Request as a broadcast
+  - The device with the target IP sends an ARP Reply
+  - The host saves the IP-to-MAC mapping in its ARP cache
+
+- Communication Between Different LANs:
+  - Example: Host A -> Router A -> Router B -> Host B
+  - Host A knows the destination IP Address of Host B
+  - Host A finds Router A's MAC Address using ARP
+  - Host A sends an Ethernet Frame to Router A
+  - Router A checks the Destination IP Address
+  - Router A finds Router B's MAC Address using ARP if needed
+  - Router A forwards the packet to Router B
+  - Router B checks the Destination IP Address
+  - Router B finds Host B's MAC Address using ARP if needed
+  - Router B sends the Frame to Host B
+  - Each router uses ARP on its local Ethernet link when needed
+  - The Source and Destination MAC Addresses change at each routed Ethernet link
+  - The Destination IP Address stays the same during normal routing
+  - ARP is not needed again if the MAC Address is already in the ARP cache
+
+- IPv6 Neighbor Discovery:
+  - IPv6 does not use ARP
+  - It uses NDP to find the MAC Address of a neighbor
+
+### Practice
+
+- Compared MAC Addresses and IP Addresses
+- Studied the role of the Network Layer
+- Compared IPv4 and IPv6 addresses
+- Drew the IPv4 Header and checked the size of each field
+- Learned how MTU and IP Fragmentation work
+- Studied DF, MF and Fragment Offset
+- Learned why TTL is needed
+- Drew the IPv6 Header and checked its fields
+- Compared the IPv4 and IPv6 Headers
+- Studied how ARP Request and ARP Reply work
+- Traced packet delivery between hosts on the same LAN
+- Traced packet delivery from Host A to Host B through two routers
+- Studied how ARP finds the next device's MAC Address
+- Compared how MAC Addresses and IP Addresses are used during routing
