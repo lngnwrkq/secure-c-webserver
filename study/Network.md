@@ -575,3 +575,198 @@
 - Traced packet delivery from Host A to Host B through two routers
 - Studied how ARP finds the next device's MAC Address
 - Compared how MAC Addresses and IP Addresses are used during routing
+-------------
+## 2026-10-30
+
+### Today
+
+- Static and Dynamic IP Addresses
+- DHCP
+- Classless Addressing
+- Subnet Mask and CIDR
+- Subnetting
+- Public and Private IP Addresses
+- NAT
+- Routing
+- Routing Table and Default Route
+- Static and Dynamic Routing
+- AS (Autonomous System)
+- RIP, OSPF and BGP
+- BGP Path Attributes
+
+### What I learned
+
+- Static IP Address:
+  - An IP address set manually
+  - Usually stays the same until it is changed
+  - Often used for servers and network devices
+
+- Dynamic IP Address:
+  - An IP address assigned automatically
+  - Usually assigned by a DHCP server
+  - Can change when it is assigned again
+
+- DHCP (Dynamic Host Configuration Protocol):
+  - Automatically gives network settings to a host
+  - Can provide an IP address, Subnet Mask, Default Gateway and DNS server
+  - Uses four main steps: Discover, Offer, Request and ACK
+
+- DHCP Discover:
+  - The client looks for a DHCP server
+  - Usually sends a broadcast message
+  - The source IP is 0.0.0.0 during initial setup
+
+- DHCP Offer:
+  - The DHCP server offers an available IP address
+  - Also provides other network settings
+
+- DHCP Request:
+  - The client requests the offered IP address
+  - Usually uses a broadcast during initial setup
+
+- DHCP ACK:
+  - The server confirms the IP address assignment
+  - The client can use the assigned settings
+
+- Classless Addressing:
+  - Divides networks without using fixed class sizes
+  - Uses CIDR to show the network prefix length
+  - Allows more flexible use of IP addresses
+
+- Subnet Mask:
+  - Separates the Network part and Host part of an IP address
+  - Network bits are 1
+  - Host bits are 0
+  - Uses a bitwise AND operation to find the Network Address
+
+- CIDR (Classless Inter-Domain Routing):
+  - Uses /n to show the number of network bits
+  - Example: 192.168.0.2/25
+  - /25 means 25 network bits and 7 host bits
+  - Subnet Mask: 255.255.255.128
+  - Network Address: 192.168.0.0
+  - Broadcast Address: 192.168.0.127
+  - Usable Host Range: 192.168.0.1 - 192.168.0.126
+  - Usable Hosts: 2^7 - 2 = 126
+
+- Public IP Address:
+  - Used for communication on the public Internet
+  - Publicly routed addresses must be globally unique
+
+- Private IP Address:
+  - Used inside private networks
+  - Not directly routed on the public Internet
+  - Common private IPv4 ranges:
+    - 10.0.0.0/8
+    - 172.16.0.0/12
+    - 192.168.0.0/16
+
+- NAT (Network Address Translation):
+  - Translates IP addresses between networks
+  - Commonly used to connect private networks to the Internet
+  - NAPT can also translate port numbers
+
+- Routing:
+  - Selects a path to the destination network
+  - Routers use Routing Tables to forward packets
+  - Two main types: Static Routing and Dynamic Routing
+
+- Routing Table:
+  - Stores routes to different networks
+  - Contains Destination, Subnet Mask, Gateway, Interface and Metric
+  - Uses the longest matching prefix first
+  - When routes have the same prefix, Metric can help choose a route
+
+- Default Route:
+  - Written as 0.0.0.0/0 in IPv4
+  - Used when no more specific route matches
+  - Usually sends packets to the Default Gateway
+
+- Static Routing:
+  - Routes are set manually by an administrator
+  - Simple and easy to control
+  - Needs manual changes when the network changes
+
+- Dynamic Routing:
+  - Routers exchange routing information automatically
+  - Can update routes when the network changes
+  - Uses protocols such as RIP, OSPF and BGP
+
+- AS (Autonomous System):
+  - A group of networks managed under one routing policy
+  - Used to organize routing on the Internet
+
+- IGP (Interior Gateway Protocol):
+  - Used for routing inside an AS
+  - Examples: RIP and OSPF
+
+- EGP (Exterior Gateway Protocol):
+  - Used for routing between ASes
+  - BGP is the main protocol used for this purpose
+
+- RIP (Routing Information Protocol):
+  - A Distance Vector routing protocol
+  - Uses Hop Count to choose routes
+  - Usually prefers the route with fewer hops
+  - Supports up to 15 hops for a reachable route
+
+- OSPF (Open Shortest Path First):
+  - A Link State routing protocol
+  - Uses link costs to find the best path
+  - Shares network information inside an area
+  - Uses areas to manage large networks
+  - An ABR connects different OSPF areas
+
+- BGP (Border Gateway Protocol):
+  - Used to exchange routing information between ASes
+  - Uses routing policies and path information
+  - Does not always choose the shortest AS_PATH
+  - Routers can form BGP peer connections
+
+- iBGP:
+  - BGP communication inside the same AS
+
+- eBGP:
+  - BGP communication between different ASes
+
+- BGP Path Attributes:
+  - Help BGP choose and manage routes
+
+- AS_PATH:
+  - Shows the AS numbers in the path
+  - Helps detect routing loops
+  - Used when selecting a BGP route
+
+- NEXT_HOP:
+  - Shows the next-hop IP address used to reach a route
+  - Helps routers find where to forward packets
+
+- LOCAL_PREF:
+  - Shows the preferred route inside an AS
+  - A higher value is usually preferred
+  - Helps choose an outgoing path from the AS
+  - Can be more important than AS_PATH length
+
+### Practice
+
+- Compared Static and Dynamic IP Addresses
+- Studied the four steps of DHCP
+- Learned why DHCP uses broadcast messages
+- Studied Subnet Masks and CIDR notation
+- Converted an IP address and Subnet Mask into binary by hand
+- Used a bitwise AND operation to calculate a Network Address
+- Practiced subnetting with 192.168.0.2/25
+  - Calculated the Network Address: 192.168.0.0
+  - Calculated the Broadcast Address: 192.168.0.127
+  - Found the usable Host Range: 192.168.0.1 - 192.168.0.126
+  - Calculated the number of usable hosts: 126
+- Compared Public and Private IP Addresses
+- Studied how NAT works
+- Read a Routing Table example
+- Learned how the Default Route works
+- Compared Static and Dynamic Routing
+- Studied AS and routing protocols
+- Compared RIP, OSPF and BGP
+- Learned how OSPF uses areas and link costs
+- Studied iBGP and eBGP
+- Learned AS_PATH, NEXT_HOP and LOCAL_PREF
