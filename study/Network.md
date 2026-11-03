@@ -770,3 +770,305 @@
 - Learned how OSPF uses areas and link costs
 - Studied iBGP and eBGP
 - Learned AS_PATH, NEXT_HOP and LOCAL_PREF
+-------------
+## 2026-11-02 ~ 2026-11-03
+
+### Today
+
+- Transport Layer
+- TCP and UDP
+- Port Numbers
+- NAT, NAPT and Port Forwarding
+- ICMP
+- TCP Header
+- Sequence Number and Acknowledgment Number
+- TCP 3-Way Handshake
+- TCP 4-Way Handshake
+- UDP Header
+- TCP Error Control and ARQ
+- Sliding Window and Flow Control
+- TCP Congestion Control
+- Slow Start and Congestion Avoidance
+- Fast Retransmission and Fast Recovery
+- ECN (Explicit Congestion Notification)
+
+### What I learned
+
+- Transport Layer:
+  - The fourth layer of the OSI model
+  - Connects communication between applications
+  - Uses Port Numbers to identify applications
+  - TCP and UDP are the main transport protocols
+
+- TCP (Transmission Control Protocol):
+  - A connection-oriented protocol
+  - Provides reliable and ordered data delivery
+  - Uses Sequence Numbers and ACKs
+  - Supports error control, flow control and congestion control
+  - Uses a byte stream
+
+- UDP (User Datagram Protocol):
+  - A connectionless protocol
+  - Does not guarantee delivery or order
+  - Does not provide built-in retransmission
+  - Has a simple header and low overhead
+  - Often used for real-time applications
+
+- Port Number:
+  - Identifies an application or service on a host
+  - Uses 16 bits
+  - Range: 0 - 65535
+  - Well-Known Ports: 0 - 1023
+  - Registered Ports: 1024 - 49151
+  - Dynamic/Private Ports: 49152 - 65535
+
+- Common Port Numbers:
+  - 22: SSH
+  - 53: DNS
+  - 80: HTTP
+  - 443: HTTPS
+  - 8080: Common alternative HTTP port
+
+- IP Address and Port Number:
+  - IP Address: Identifies a host or network interface
+  - Port Number: Identifies an application or service
+  - Example: 192.168.0.15:8000
+
+- NAT (Network Address Translation):
+  - Changes IP addresses in packets
+  - Often translates private IP addresses to public IP addresses
+  - Can use a one-to-one address mapping
+
+- NAPT (Network Address and Port Translation):
+  - Translates IP addresses and Port Numbers
+  - Allows many private hosts to share one public IP address
+  - Uses translation records to handle return traffic
+
+- Port Forwarding:
+  - Sends incoming traffic to a selected host and port
+  - Uses a rule set on a router
+  - Can be used to access a server inside a private network
+
+- ICMP (Internet Control Message Protocol):
+  - Reports IP communication errors
+  - Helps check network connectivity
+  - ICMP messages are carried inside IP packets
+  - Can be sent by hosts or routers
+
+- ICMP Message:
+  - Type: Shows the message type
+  - Code: Gives more details about the message
+  - Checksum: Detects errors
+  - Message Data: Contains additional information
+
+- Common ICMP Messages:
+  - Echo Request: Asks for a reply
+  - Echo Reply: Responds to an Echo Request
+  - Destination Unreachable: Reports a delivery problem
+  - Time Exceeded: Reports TTL expiration
+
+- Ping:
+  - Uses ICMP Echo Request and Echo Reply
+  - Checks whether a host responds
+  - Can measure Round-Trip Time
+
+- TCP Communication:
+  - Connection Setup
+  - Data Transfer
+  - Connection Termination
+
+- MSS (Maximum Segment Size):
+  - The maximum TCP data size in one segment
+  - Does not include TCP or IP headers
+
+- TCP Header:
+  - Minimum size: 20 Bytes
+  - Maximum size: 60 Bytes
+  - Contains information for reliable communication
+
+- TCP Header Fields:
+  - Source Port (16 bits): Sender's port number
+  - Destination Port (16 bits): Receiver's port number
+  - Sequence Number (32 bits): Sequence number of the first data byte
+  - Acknowledgment Number (32 bits): Next expected byte number
+  - Data Offset (4 bits): TCP header length in 4-Byte units
+  - Reserved: Reserved for future use
+  - Flags: Control TCP communication
+  - Window Size (16 bits): Receiver's advertised window
+  - Checksum (16 bits): Detects errors
+  - Urgent Pointer (16 bits): Marks urgent data when URG is set
+  - Options: Additional TCP settings
+  - Padding: Makes the header length a multiple of 4 Bytes
+
+- TCP Flags:
+  - SYN: Starts a connection
+  - ACK: Shows that the ACK field is valid
+  - FIN: Finishes one direction of a connection
+  - RST: Resets a connection
+  - PSH: Requests quick delivery of data to the application
+  - URG: Shows that the Urgent Pointer is valid
+  - ECE: Used for ECN feedback
+  - CWR: Shows a response to congestion
+  - NS: An older ECN-related flag
+
+- ISN (Initial Sequence Number):
+  - The first sequence number chosen for a TCP connection
+  - The client and server choose their own ISNs
+  - SYN uses one sequence number
+
+- Sequence Number (SEQ):
+  - Shows the position of data in the TCP byte stream
+  - Usually increases by the number of data bytes sent
+
+- Acknowledgment Number (ACK):
+  - Shows the next byte the receiver expects
+  - TCP uses cumulative acknowledgments
+  - SYN and FIN each use one sequence number
+
+- TCP Sequence Number Example:
+  - Client ISN: 100
+  - MSS: 500 Bytes
+  - Total Data: 1500 Bytes
+  - After SYN, the first data SEQ is 101
+  - Segment 1: SEQ 101, Data 500B, ACK 601
+  - Segment 2: SEQ 601, Data 500B, ACK 1101
+  - Segment 3: SEQ 1101, Data 500B, ACK 1601
+
+- TCP 3-Way Handshake:
+  - Used to establish a TCP connection
+  - Client: Active Open
+  - Server: Passive Open
+  - Step 1: Client sends SYN
+  - Step 2: Server sends SYN + ACK
+  - Step 3: Client sends ACK
+
+- Handshake Example:
+  - Client ISN: 100
+  - Server ISN: 800
+  - Client -> Server: SYN, SEQ 100
+  - Server -> Client: SYN + ACK, SEQ 800, ACK 101
+  - Client -> Server: ACK, SEQ 101, ACK 801
+  - Connection Established
+
+- TCP 4-Way Handshake:
+  - Common process for closing a TCP connection
+  - Active Close: Sends FIN first
+  - Passive Close: Receives FIN first
+  - Step 1: FIN
+  - Step 2: ACK
+  - Step 3: FIN
+  - Step 4: ACK
+  - FIN also uses one sequence number
+  - Active Close usually enters TIME_WAIT
+
+- TCP Close Example:
+  - Client sent 1500 Bytes after ISN 100
+  - Client sends FIN with SEQ 1601
+  - Server replies with ACK 1602
+  - Server sends its own FIN when ready
+  - Client sends the final ACK
+
+- UDP Header:
+  - Fixed size: 8 Bytes
+  - Source Port (16 bits)
+  - Destination Port (16 bits)
+  - Length (16 bits)
+  - Checksum (16 bits)
+
+- TCP Error Control:
+  - Detects errors and missing data
+  - Uses ACKs and retransmission
+  - Uses timers and duplicate ACKs
+
+- RTT (Round-Trip Time):
+  - Time between sending data and receiving its ACK
+  - Used to help set retransmission timers
+
+- ARQ (Automatic Repeat reQuest):
+  - Uses acknowledgments and retransmission
+  - Helps recover lost data
+
+- Stop-and-Wait ARQ:
+  - Sends one data unit and waits for an ACK
+  - Simple but can be slow
+
+- Go-Back-N ARQ:
+  - Allows multiple data units to be sent
+  - Retransmits a missing unit and later unacknowledged units
+
+- Selective Repeat ARQ:
+  - Retransmits only missing data units
+  - Can improve efficiency
+
+- Fast Retransmission:
+  - Uses duplicate ACKs to detect possible packet loss
+  - Commonly retransmits after three duplicate ACKs
+  - Does not need to wait for a timeout
+
+- Flow Control:
+  - Prevents the sender from sending more than the receiver can handle
+  - Uses the receiver's advertised window
+
+- Sliding Window:
+  - Allows multiple segments to be sent before receiving all ACKs
+  - Moves forward as data is acknowledged
+  - Helps improve network performance
+
+- Congestion Control:
+  - Prevents too much data from entering the network
+  - Uses a Congestion Window (cwnd)
+  - Adjusts the sending rate based on network conditions
+
+- Slow Start:
+  - Starts with a limited Congestion Window
+  - Increases cwnd quickly when ACKs arrive
+  - Growth is about exponential per RTT
+  - Continues until a threshold or congestion event
+
+- Congestion Avoidance:
+  - Increases cwnd more slowly
+  - A common method is AIMD
+  - Helps reduce network congestion
+
+- AIMD (Additive Increase / Multiplicative Decrease):
+  - Increases cwnd gradually
+  - Reduces cwnd when congestion is detected
+
+- Fast Recovery (Classic TCP Reno):
+  - Starts after three duplicate ACKs
+  - Reduces the congestion threshold
+  - Temporarily increases cwnd by 3 MSS
+  - Uses new ACKs to leave Fast Recovery
+
+- Timeout (Classic TCP Reno):
+  - Indicates possible packet loss
+  - Reduces the congestion threshold
+  - Restarts Slow Start with a small cwnd
+
+- ECN (Explicit Congestion Notification):
+  - Allows routers to mark congestion without dropping a packet
+  - Uses ECN bits in the IP header
+  - TCP uses ECE and CWR flags for feedback
+  - Helps the sender reduce its sending rate
+
+### Practice
+
+- Compared TCP and UDP
+- Studied Port Number ranges and common services
+- Reviewed NAT, NAPT and Port Forwarding
+- Drew the ICMP Echo Request and Echo Reply process
+- Studied the TCP Header and its fields
+- Compared SEQ, ACK, ISN and MSS
+- Calculated TCP Sequence and ACK Numbers
+- Practiced sending 1500 Bytes with MSS 500 Bytes
+- Studied the TCP 3-Way Handshake with ISN values
+- Drew the TCP 4-Way Handshake and FIN sequence numbers
+- Compared Active Open, Passive Open, Active Close and Passive Close
+- Studied the UDP Header
+- Compared Stop-and-Wait, Go-Back-N and Selective Repeat ARQ
+- Learned how duplicate ACKs cause Fast Retransmission
+- Studied Sliding Window and Flow Control
+- Compared Slow Start and Congestion Avoidance
+- Studied AIMD and Fast Recovery
+- Drew changes in the Congestion Window
+- Learned how ECN reports network congestion
