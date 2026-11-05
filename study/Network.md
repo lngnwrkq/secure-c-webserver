@@ -1072,3 +1072,128 @@
 - Studied AIMD and Fast Recovery
 - Drew changes in the Congestion Window
 - Learned how ECN reports network congestion
+-------------
+## 2026-11-05
+
+### Today
+
+- Application Layer
+- Domain Name
+- DNS (Domain Name System)
+- Recursive and Iterative DNS Queries
+- DNS Cache and TTL
+- URI (Uniform Resource Identifier)
+- URL (Uniform Resource Locator)
+- URN (Uniform Resource Name)
+- URL Structure
+
+### What I learned
+
+- Application Layer:
+  - Provides network services to applications
+  - Uses protocols such as HTTP, DNS and SSH
+  - Helps applications communicate over a network
+
+- Domain Name:
+  - A readable name used to identify an Internet resource
+  - Easier to remember than an IP address
+  - Example: www.example.com
+
+- Domain Name Structure:
+  - Domains have a hierarchical structure
+  - Root Domain: The highest level, shown by a final dot
+  - TLD: Top-Level Domain, such as .com
+  - Second-Level Domain: example
+  - Subdomain: www
+
+- DNS (Domain Name System):
+  - Translates domain names into IP addresses
+  - Uses a hierarchical system of DNS servers
+  - Helps hosts find the IP address of a server
+
+- Recursive DNS Query:
+  - A client asks a DNS resolver for an answer
+  - The resolver works to find the final answer
+  - The client does not need to ask each DNS server
+
+- Iterative DNS Query:
+  - A DNS server can return a referral to another server
+  - The resolver asks the next server
+  - This process continues until an answer is found
+
+- DNS Resolution Process:
+  - A host asks a recursive DNS resolver
+  - The resolver checks its cache first
+  - If needed, it asks a Root DNS Server
+  - The Root Server refers it to a TLD DNS Server
+  - The TLD Server refers it to an Authoritative DNS Server
+  - The Authoritative Server provides the DNS record
+  - The resolver returns the result to the host
+
+- Root DNS Server:
+  - Helps find the correct TLD DNS Server
+
+- TLD DNS Server:
+  - Helps find the Authoritative DNS Server
+  - Example: The DNS servers for .com
+
+- Authoritative DNS Server:
+  - Stores DNS records for a domain
+  - Provides the requested DNS information
+
+- DNS Cache:
+  - Temporarily stores DNS results
+  - Reduces repeated DNS queries
+  - Can make DNS resolution faster
+  - Uses TTL to control how long results are cached
+
+- DNS TTL (Time To Live):
+  - Shows how long a DNS record can stay in a cache
+  - Helps control when cached information expires
+
+- URI (Uniform Resource Identifier):
+  - A string used to identify a resource
+  - URL and URN are types of URI
+
+- URL (Uniform Resource Locator):
+  - Identifies a resource and how to access it
+  - Commonly used for web pages and files
+  - Example: https://www.example.com/index.html
+
+- URL Structure:
+  - Example: https://www.example.com:443/docs/page?lang=en#intro
+  - Scheme: https
+  - Authority: www.example.com:443
+  - Host: www.example.com
+  - Port: 443
+  - Path: /docs/page
+  - Query: lang=en
+  - Fragment: intro
+
+- Scheme:
+  - Shows the protocol or access method
+  - Examples: http, https, ftp
+
+- Authority:
+  - Contains the host and optional port information
+
+- Path:
+  - Shows the path of a resource
+  - Example: /docs/page
+
+- Query:
+  - Sends additional parameters in a URL
+  - Usually uses key=value pairs
+  - Example: ?room=2&size=100
+
+- Fragment:
+  - Points to a specific part of a resource
+  - Starts with #
+  - Usually handled by the browser
+  - Not sent in a normal HTTP request
+
+- URN (Uniform Resource Name):
+  - Identifies a resource by its name
+  - Does not need to show its network location
+  - Example: urn:isbn:0451450523
+  - Example: urn:ietf:rfc:2648
