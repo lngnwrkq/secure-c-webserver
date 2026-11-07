@@ -1197,3 +1197,285 @@
   - Does not need to show its network location
   - Example: urn:isbn:0451450523
   - Example: urn:ietf:rfc:2648
+  -------------
+  ## 2026-11-06 ~ 2026-11-07
+
+### Today
+
+- HTTP (Hypertext Transfer Protocol)
+- HTTP Features
+- HTTP Request and Response
+- HTTP Methods
+- HTTP Status Codes
+- HTTP Redirection
+- HTTP Header Fields
+- HTTP Authentication
+- HTTP Cache
+- Conditional Requests
+- Cookies
+- Content Negotiation
+
+### What I learned
+
+- HTTP (Hypertext Transfer Protocol):
+  - An Application Layer protocol
+  - Used for communication between clients and servers
+  - Uses requests and responses
+  - Used to transfer web pages, images and other data
+
+- Request and Response:
+  - A client sends an HTTP Request
+  - A server processes the request
+  - The server sends an HTTP Response
+  - A browser uses the response to display a web page
+
+- Media Independent:
+  - HTTP can transfer different types of data
+  - Examples: HTML, JSON, images and videos
+  - MIME types are used to describe the data format
+
+- MIME Type:
+  - Shows the type of data
+  - Uses the Type/Subtype format
+  - Examples: text/html, image/png, application/json
+  - Often used in the Content-Type header
+
+- Stateless:
+  - HTTP does not automatically remember previous requests
+  - Each request can be handled independently
+  - Cookies and sessions can help maintain user state
+
+- Persistent Connection:
+  - Allows multiple HTTP requests over one TCP connection
+  - Reduces the need to create new TCP connections
+  - HTTP/1.1 uses persistent connections by default
+  - Connection reuse and Stateless are different concepts
+
+- HTTP Message:
+  - Contains a Start Line and Header Fields
+  - May also contain a Message Body
+  - A blank line separates headers from the body
+
+- Request Start Line:
+  - Contains Method, Request Target and HTTP Version
+  - Example: GET /index.html HTTP/1.1
+
+- Response Start Line:
+  - Contains HTTP Version, Status Code and Reason Phrase
+  - Example: HTTP/1.1 200 OK
+
+- HTTP Methods:
+  - GET: Requests a resource
+  - HEAD: Requests headers without a response body
+  - POST: Sends data for the server to process
+  - PUT: Creates or replaces a resource
+  - PATCH: Makes partial changes to a resource
+  - DELETE: Requests the removal of a resource
+  - OPTIONS: Checks available communication options
+  - CONNECT: Creates a tunnel
+  - TRACE: Used for diagnostic requests
+
+- HTTP Status Codes:
+  - 1xx: Informational responses
+  - 2xx: Successful responses
+  - 3xx: Redirection
+  - 4xx: Client errors
+  - 5xx: Server errors
+
+- Common Status Codes:
+  - 200 OK: Request succeeded
+  - 201 Created: Resource created
+  - 301 Moved Permanently: Permanent redirect
+  - 302 Found: Temporary redirect
+  - 303 See Other: Redirects to a GET request
+  - 307 Temporary Redirect: Keeps the request method
+  - 308 Permanent Redirect: Keeps the request method
+  - 400 Bad Request: Invalid request
+  - 401 Unauthorized: Authentication is required or invalid
+  - 403 Forbidden: Access is denied
+  - 404 Not Found: Resource not found
+  - 405 Method Not Allowed: Method is not allowed
+  - 500 Internal Server Error: Server error
+  - 502 Bad Gateway: Invalid response from an upstream server
+  - 503 Service Unavailable: Service is unavailable
+
+- HTTP Redirection:
+  - Tells the client to use another URL
+  - Often uses the Location header
+  - 301 and 308: Permanent Redirection
+    - The new URL should replace the old URL for future requests
+  - 302 and 307: Temporary Redirection
+    - The old URL is still valid and should be kept
+  - 301 and 302: Can change POST to GET
+  - 303: Usually redirects to GET
+
+
+- HTTP Header Fields:
+  - Give additional information about a request or response
+  - Written as Field-Name: Field-Value
+
+- Host:
+  - Shows the target host name
+  - Example: Host: www.example.com
+
+- User-Agent:
+  - Gives information about the client software
+  - Often shows browser information
+
+- Referer:
+  - Shows the URL of the page that referred the client
+  - May be omitted or limited for privacy
+
+- Authorization:
+  - Sends authentication information to the server
+  - Example: Authorization: Basic ...
+
+- WWW-Authenticate:
+  - Tells the client which authentication method is required
+  - Commonly used with a 401 response
+
+- Basic Authentication:
+  - Sends credentials using Base64 encoding
+  - Base64 is not encryption
+  - HTTPS is important for protecting credentials
+
+- Server:
+  - Can provide information about the server software
+
+- Allow:
+  - Shows which HTTP methods are allowed
+  - Used with a 405 response
+
+- Retry-After:
+  - Tells the client when to try again
+  - Can be used with a 503 response
+
+- Location:
+  - Shows the target URL for a redirect
+  - Also used in some other responses
+
+- Date:
+  - Shows when the HTTP message was generated
+
+- Connection:
+  - Controls some connection-related options
+  - Example: Connection: close
+  - HTTP/1.1 connections are persistent by default
+
+- Content-Length:
+  - Shows the message body size in Bytes
+  - Does not include the start line or header fields
+
+- Content-Type:
+  - Shows the media type of the message body
+  - Example: Content-Type: text/html
+
+- Content-Language:
+  - Shows the language of the response content
+  - Example: Content-Language: ko
+
+- Content-Encoding:
+  - Shows how the content was encoded for transfer
+  - Example: Content-Encoding: gzip
+
+- HTTP Cache:
+  - Stores HTTP responses for later use
+  - Reduces repeated requests and data transfer
+  - Can improve loading speed
+
+- Private Cache:
+  - Stores responses for one user
+  - Example: Browser Cache
+
+- Shared Cache:
+  - Can store responses for multiple users
+  - Example: A shared proxy cache
+
+- Cache-Control:
+  - Controls how HTTP responses are cached
+  - max-age: Sets the freshness time in seconds
+  - private: Limits storage to private caches
+  - public: Allows shared caches to store a response
+  - no-store: Tells caches not to store the response
+
+- Expires:
+  - Shows the time when cached content becomes stale
+
+- Conditional Request:
+  - Checks whether cached content has changed
+  - Helps avoid downloading the same data again
+
+- If-Modified-Since:
+  - Sends the cached resource's modification time
+  - The server checks whether the resource changed
+  - If unchanged, the server can return 304 Not Modified
+  - If changed, the server can return 200 with new content
+
+- ETag:
+  - An identifier for a version of a resource
+  - Used to check whether content has changed
+
+- If-None-Match:
+  - Sends a saved ETag to the server
+  - The server compares it with the current ETag
+  - A matching ETag can result in 304 Not Modified
+
+- 304 Not Modified:
+  - Means the cached response can be reused
+  - Does not include a response body
+
+- Cookie:
+  - Stores small pieces of information in the browser
+  - Helps maintain login sessions and user settings
+  - Can be sent with later HTTP requests
+
+- Set-Cookie:
+  - A response header sent by the server
+  - Tells the browser to store a cookie
+  - Example: Set-Cookie: session=abc
+
+- Cookie Request Header:
+  - Sends stored cookies to the server
+  - Example: Cookie: session=abc
+
+- Cookie Attributes:
+  - Domain: Sets which domain can receive the cookie
+  - Path: Limits the request paths for the cookie
+  - Expires: Sets an expiration date
+  - Max-Age: Sets the lifetime in seconds
+  - HttpOnly: Blocks JavaScript access to the cookie
+  - Secure: Sends the cookie only over secure connections
+
+- Content Negotiation:
+  - Allows a client to tell the server its preferences
+  - The server can choose a suitable response format
+  - Used for languages and media types
+
+- Accept-Language:
+  - Shows preferred response languages
+  - Example: ko-KR, ko;q=0.9, en-US;q=0.8
+  - A larger q value means higher preference
+
+- Accept:
+  - Shows the media types the client can accept
+  - Example: Accept: text/html
+
+### Practice
+
+- Reviewed the process from entering a URL to receiving an HTTP response
+- Compared Stateless and Persistent Connection
+- Studied the structure of HTTP requests and responses
+- Compared common HTTP Methods
+- Organized HTTP Status Codes by category
+- Compared 301, 302, 303, 307 and 308 redirects
+- Studied how redirects can change or keep HTTP Methods
+- Compared HTTP/1.0, HTTP/1.1, HTTP/2 and HTTP/3
+- Studied HTTP request and response header fields
+- Reviewed Basic Authentication and Authorization headers
+- Learned how Content-Type and Content-Length work
+- Compared Private Cache and Shared Cache
+- Studied If-Modified-Since and 304 Not Modified
+- Studied ETag and If-None-Match
+- Compared Set-Cookie and Cookie headers
+- Learned the purpose of cookie attributes
+- Analyzed Accept and Accept-Language header examples
