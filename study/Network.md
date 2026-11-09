@@ -1197,8 +1197,8 @@
   - Does not need to show its network location
   - Example: urn:isbn:0451450523
   - Example: urn:ietf:rfc:2648
-  -------------
-  ## 2026-11-06 ~ 2026-11-07
+-------------
+## 2026-11-06 ~ 2026-11-07
 
 ### Today
 
@@ -1479,3 +1479,158 @@
 - Compared Set-Cookie and Cookie headers
 - Learned the purpose of cookie attributes
 - Analyzed Accept and Accept-Language header examples
+-------------
+## 2026-11-09
+
+### Today
+
+- Installed and used Wireshark
+- Captured and analyzed IPv4 and ICMP packets
+- Analyzed TCP 3-Way Handshake
+- Analyzed TCP Connection Termination
+- Studied HTTP Requests and Responses
+- Compared Raw and Relative TCP Sequence Numbers
+
+### What I learned
+
+#### 1. IPv4 and ICMP Packet Capture
+
+- Used the ping command in Windows CMD.
+- Sent ICMP Echo Requests to my Default Gateway.
+- Captured the packets with Wireshark.
+- Analyzed IPv4 and ICMP header fields.
+
+- IPv4 Address:
+  - Source IP: 192.168.0.14
+  - Destination IP: 192.168.0.1
+  - Confirmed that the reply uses the opposite addresses.
+
+- IPv4 Fragmentation:
+  - Captured 6 IP fragments in total.
+  - The Echo Request was divided into 3 fragments.
+  - The Echo Reply was also divided into 3 fragments.
+  - Each group had the same Identification value.
+
+- Echo Request:
+  - Identification: 62564
+  - Fragment Offsets: 0, 185, 370
+  - MF Flags: 1, 1, 0
+  - DF Flag: 0
+
+- Echo Reply:
+  - Identification: 64654
+  - Fragment Offsets: 0, 185, 370
+  - MF Flags: 1, 1, 0
+  - DF Flag: 0
+
+- Fragmentation Fields:
+  - Identification: Identifies fragments of the same original packet.
+  - DF: Shows whether fragmentation is prohibited.
+  - MF: Shows whether more fragments follow.
+  - Fragment Offset: Shows the position of each fragment.
+  - Fragment Offset uses 8-Byte units.
+
+- ICMP Analysis:
+  - Echo Request: Type 8, Code 0
+  - Echo Reply: Type 0, Code 0
+  - Confirmed the request and reply messages.
+  - Learned how ICMP works with IPv4.
+
+#### 2. TCP 3-Way Handshake Capture
+
+- Used curl in Windows CMD to access a website.
+- Used the Wireshark filter: tcp.port == 80
+- Captured the TCP connection setup process.
+- Checked TCP Flags, Sequence Numbers and ACK Numbers.
+
+- TCP Connection Setup:
+  - Step 1: Client -> Server: SYN
+  - Step 2: Server -> Client: SYN + ACK
+  - Step 3: Client -> Server: ACK
+
+- Actual Packet Analysis:
+  - Client Source Port: 62630
+  - Server Destination Port: 80
+  - Client Initial SEQ: 3749518869
+  - Server Initial SEQ: 2531424269
+  - Server ACK: 3749518870
+  - Client ACK: 2531424270
+
+- Sequence Number:
+  - Shows the position of data in the TCP byte stream.
+  - SYN uses one sequence number.
+  - Each side has its own Initial Sequence Number.
+
+- Raw and Relative Sequence Numbers:
+  - Raw Number: The actual number stored in the TCP header.
+  - Relative Number: Adjusted by Wireshark for easier analysis.
+  - Initial Sequence Numbers are difficult to predict.
+  - Confirmed that ACK increases by 1 after SYN.
+
+#### 3. TCP Connection Termination Capture
+
+- Captured the TCP connection closing process.
+- Analyzed FIN and ACK Flags.
+- Checked Sequence and Acknowledgment Numbers.
+
+- Captured Packets:
+  - An ACK packet before the closing process
+  - Client -> Server: FIN + ACK
+  - Server -> Client: FIN + ACK
+  - Client -> Server: ACK
+
+- Actual Packet Analysis:
+  - Client FIN SEQ: 2180642518
+  - Server ACK: 2180642519
+  - Server FIN SEQ: 2165230575
+  - Client Final ACK: 2165230576
+
+- TCP Connection Termination:
+  - FIN means the sender has finished sending data.
+  - FIN uses one sequence number.
+  - The other side acknowledges the FIN.
+  - FIN and ACK can be sent in one segment.
+  - Connection termination does not always need
+    four separate segments.
+
+#### 4. HTTP Request and Response Analysis
+
+- Tried to capture HTTP traffic from Google.
+- Found that Google uses HTTPS and TLS 1.3.
+- Could not directly read the encrypted HTTP messages.
+- Used the textbook materials to analyze HTTP communication.
+
+- HTTP Request:
+  - Checked the GET method.
+  - Learned how a client requests a resource.
+  - Examined the HTTP request structure.
+
+- HTTP Response:
+  - Checked the HTTP Status Code.
+  - Checked the Content-Type header.
+  - Compared the MIME Type with the response data.
+  - Confirmed that MIME Types describe data formats.
+
+- HTTPS:
+  - Protects HTTP messages using encryption.
+  - Normal Wireshark captures do not show plaintext
+    HTTP data without decryption information.
+
+### Practice
+
+- Installed Wireshark and captured network packets.
+- Used ping to communicate with my Default Gateway.
+- Analyzed 6 IPv4 fragments.
+- Checked Identification, DF, MF and Fragment Offset.
+- Compared ICMP Echo Request and Echo Reply.
+- Used curl to create a TCP connection.
+- Applied the tcp.port == 80 display filter.
+- Captured all 3 packets of the TCP 3-Way Handshake.
+- Checked SYN and ACK Flags.
+- Compared actual Raw Sequence and ACK Numbers.
+- Captured TCP FIN and ACK packets during connection closing.
+- Checked how FIN changes the ACK Number.
+- Tried to analyze Google's HTTPS traffic.
+- Studied HTTP GET Requests and Responses
+  using textbook capture materials.
+- Checked Status Codes, Content-Type and MIME Types.
