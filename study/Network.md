@@ -1493,8 +1493,8 @@
 
 ### What I learned
 
-- Wireshark Practice Files
-  The packet capture files from my hands-on Wireshark practice are available in the Wireshark folder.
+- wireshark Practice Files
+  The packet capture files from my hands-on wireshark practice are available in the wireshark folder.
   These files include IPv4/ICMP analysis, TCP 3-Way Handshake, and TCP Connection Termination.
 
 #### 1. IPv4 and ICMP Packet Capture
@@ -1638,3 +1638,241 @@
 - Studied HTTP GET Requests and Responses
   using textbook capture materials.
 - Checked Status Codes, Content-Type and MIME Types.
+-------------
+## 2026-11-11
+
+### Today
+
+- Network Availability and High Availability
+- Redundancy and Multiplexing
+- Single Point of Failure (SPOF)
+- Active-Active and Active-Standby
+- NIC Teaming and Bonding
+- Load Balancing and Health Checks
+- Forward Proxy and Reverse Proxy
+- Symmetric and Asymmetric Encryption
+- Session Keys and Hybrid Encryption
+- Digital Certificates and Digital Signatures
+
+### What I learned
+
+#### 1. Availability and High Availability
+
+- Availability:
+  - Shows how long a system is available for use.
+  - Uptime: The time a system works normally.
+  - Downtime: The time a system is unavailable.
+  - Availability = Uptime / (Uptime + Downtime)
+  - High Availability (HA) means keeping a service
+    available with very little downtime.
+  - 99.999% availability is often called five nines.
+
+- Redundancy:
+  - Uses additional components to prevent service failure.
+  - Allows a service to continue when one component fails.
+  - Improves system reliability and availability.
+
+- Single Point of Failure (SPOF):
+  - A component whose failure can stop the entire service.
+  - Example: One router connecting all clients and servers.
+  - Redundancy can help remove SPOFs.
+
+#### 2. Active-Active and Active-Standby
+
+- Active-Standby:
+  - One component handles traffic.
+  - Another component waits as a backup.
+  - The standby component takes over if the active one fails.
+  - Main purpose: Improve availability.
+  - Disadvantage: Backup resources are not fully used
+    during normal operation.
+
+- Active-Active:
+  - Multiple components work at the same time.
+  - Traffic can be distributed between components.
+  - Improves resource usage and total performance.
+  - Can also provide redundancy.
+  - If one component fails, the remaining components
+    may have to handle more traffic.
+
+- Key Difference:
+  - Active-Standby: One active, one waiting.
+  - Active-Active: Multiple active components.
+  - Both can be used for redundancy.
+
+#### 3. NIC Teaming and Bonding
+
+- NIC (Network Interface Card):
+  - A device that connects a computer to a network.
+
+- NIC Teaming and Bonding:
+  - Combine multiple physical NICs into one
+    logical network interface.
+  - The physical NICs still exist separately.
+  - The operating system can manage them as one interface.
+  - Can improve availability or aggregate network traffic.
+  - Teaming is a common term in Windows environments.
+  - Bonding is commonly used in Linux.
+
+- Example:
+  - NIC 1: 1 Gbps
+  - NIC 2: 1 Gbps
+  - Both can be grouped into one logical interface.
+  - Depending on the mode, they can provide backup
+    or distribute traffic across multiple connections.
+  - One TCP connection does not automatically reach 2 Gbps.
+
+#### 4. Load Balancing
+
+- Load Balancing:
+  - Distributes client traffic across multiple servers.
+  - Helps prevent one server from becoming overloaded.
+  - Improves scalability and service availability.
+
+- Load Balancer:
+  - Receives client traffic and selects a backend server.
+  - Can use Layer 4 or Layer 7 information.
+  - Can be implemented in hardware or software.
+  - Examples: HAProxy and Envoy.
+
+- Health Check:
+  - Checks whether backend servers are healthy.
+  - Can use HTTP or other network checks.
+  - Unhealthy servers can be excluded from traffic routing.
+
+- Round Robin:
+  - Distributes requests to servers in rotation.
+  - Example: Server A -> Server B -> Server C.
+
+- Least Connections:
+  - Sends new connections to the server with
+    the fewest active connections.
+
+- Weighted Load Balancing:
+  - Assigns different weights to servers.
+  - More powerful servers can receive more traffic.
+
+#### 5. Forward Proxy and Reverse Proxy
+
+- Proxy Server:
+  - An intermediary between a client and a server.
+  - Receives and forwards network requests.
+
+- Forward Proxy:
+  - Acts on behalf of the client.
+  - Sends requests to external servers.
+  - Can hide the client's direct network address
+    from the destination server.
+  - Can control access to external websites.
+  - Can cache responses to reduce repeated traffic.
+
+- Reverse Proxy:
+  - Acts on behalf of backend servers.
+  - Receives requests from external clients.
+  - Forwards requests to appropriate backend servers.
+  - Can hide internal server addresses.
+  - Supports load balancing and caching.
+  - Can handle TLS termination and access control.
+
+- Key Difference:
+  - Forward Proxy: Represents the client.
+  - Reverse Proxy: Represents the server.
+
+#### 6. Symmetric Key Encryption
+
+- Symmetric Encryption:
+  - Uses the same secret key for encryption and decryption.
+  - Both sides must know the secret key.
+  - Fast and efficient for large amounts of data.
+  - Main challenge: Sharing the key securely.
+  - Example: AES.
+
+#### 7. Asymmetric Key Encryption
+
+- Asymmetric Encryption:
+  - Uses a public key and a private key.
+  - The public key can be shared.
+  - The private key must be kept secret.
+  - In public-key encryption, data encrypted with
+    the public key is decrypted with the private key.
+  - Uses more expensive mathematical operations.
+  - Example: RSA.
+
+- Example:
+  - A gets B's public key.
+  - A encrypts a message using B's public key.
+  - B decrypts the message using B's private key.
+  - Only the matching private key can decrypt the message.
+
+#### 8. Session Keys and Hybrid Encryption
+
+- Session Key:
+  - A symmetric key used to encrypt and decrypt communication data.
+  - Allows fast and efficient data encryption.
+  - Usually generated or established during secure connection setup.
+  - Both sides use the session key to protect communication.
+
+- Hybrid Encryption:
+  - Combines asymmetric and symmetric encryption.
+  - Uses asymmetric encryption to share a session key securely.
+  - Uses symmetric encryption for actual data transfer.
+  - Reduces the need for repeated expensive asymmetric operations.
+  - Provides both secure key sharing and efficient data encryption.
+
+- RSA-Based Hybrid Encryption:
+  1. Client A obtains Server B's public key.
+  2. Client A generates a random symmetric session key.
+  3. Client A encrypts the session key using B's public key.
+  4. Client A sends the encrypted session key to Server B.
+  5. Server B decrypts it using B's private key.
+  6. Both sides now have the same session key.
+  7. They use the session key to encrypt and decrypt communication data.
+
+- Why Use a Session Key?
+  - Asymmetric encryption requires more complex calculations.
+  - Symmetric encryption is faster for large amounts of data.
+  - Asymmetric operations are mainly performed during initial key setup.
+  - After sharing the session key, both sides use symmetric encryption.
+  - This avoids repeating expensive asymmetric operations for every message.
+
+#### 9. Digital Certificates and Digital Signatures
+
+- Digital Certificate:
+  - Binds a public key to an identity.
+  - Helps clients verify the identity of a server.
+  - Usually issued and signed by a Certificate Authority.
+
+- Certificate Authority (CA):
+  - An organization that issues digital certificates.
+  - Validates identity according to certificate rules.
+  - Signs certificates to support trust.
+
+- Digital Signature:
+  - Helps verify the origin and integrity of data.
+  - The signer creates a signature with a private key.
+  - A verifier checks it using the matching public key.
+
+- Certificate Verification:
+  - The client checks the certificate signature.
+  - Checks the certificate's validity period.
+  - Checks whether the hostname matches.
+  - Verifies the certificate chain to a trusted CA.
+
+### Practice
+
+- Studied the availability formula and High Availability.
+- Drew an example of a Single Point of Failure.
+- Compared Active-Active and Active-Standby systems.
+- Reviewed NIC Teaming and Bonding.
+- Studied how multiple NICs form one logical interface.
+- Compared Layer 4 and Layer 7 Load Balancing.
+- Studied Round Robin and Least Connections.
+- Reviewed Load Balancer Health Checks.
+- Compared Forward Proxy and Reverse Proxy.
+- Drew the communication flow through proxy servers.
+- Compared Symmetric and Asymmetric Encryption.
+- Reviewed RSA public-key encryption.
+- Studied why session keys improve performance.
+- Compared public-key setup and symmetric data encryption.
+- Studied Digital Certificates and Certificate Authorities.
+- Drew the basic Digital Signature verification process.
