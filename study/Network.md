@@ -1493,6 +1493,10 @@
 
 ### What I learned
 
+- Wireshark Practice Files
+  The packet capture files from my hands-on Wireshark practice are available in the Wireshark folder.
+  These files include IPv4/ICMP analysis, TCP 3-Way Handshake, and TCP Connection Termination.
+
 #### 1. IPv4 and ICMP Packet Capture
 
 - Used the ping command in Windows CMD.
