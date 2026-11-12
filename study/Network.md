@@ -1865,7 +1865,6 @@
 - Compared Active-Active and Active-Standby systems.
 - Reviewed NIC Teaming and Bonding.
 - Studied how multiple NICs form one logical interface.
-- Compared Layer 4 and Layer 7 Load Balancing.
 - Studied Round Robin and Least Connections.
 - Reviewed Load Balancer Health Checks.
 - Compared Forward Proxy and Reverse Proxy.
@@ -1876,3 +1875,148 @@
 - Compared public-key setup and symmetric data encryption.
 - Studied Digital Certificates and Certificate Authorities.
 - Drew the basic Digital Signature verification process.
+-------------
+## 2026-11-12
+
+### Today
+
+- HTTPS and SSL/TLS
+- TLS 1.3 Handshake
+- ClientHello and ServerHello
+- Diffie-Hellman Key Exchange
+- ECDHE Key Agreement
+- Shared Secret and Session Keys
+- Digital Certificate Verification
+- CertificateVerify and Finished
+- Encrypted Application Data
+
+### What I learned
+
+#### 1. HTTPS and SSL/TLS
+
+- HTTPS:
+  - Stands for Hypertext Transfer Protocol Secure.
+  - Protects HTTP communication using TLS.
+  - Provides encryption, integrity and authentication.
+
+- SSL and TLS:
+  - SSL is an older security protocol.
+  - TLS is the modern replacement for SSL.
+  - Modern HTTPS commonly uses TLS 1.2 or TLS 1.3.
+
+- HTTPS Communication over TCP:
+  1. TCP 3-Way Handshake
+  2. TLS Handshake
+  3. Encrypted HTTP Data Transfer
+
+#### 2. TLS 1.3 Handshake
+
+- ClientHello:
+  - The client starts the TLS handshake.
+  - Sends supported TLS versions and cipher suites.
+  - Sends a random value and a key_share.
+  - The key_share contains an ephemeral public key.
+
+- ServerHello:
+  - The server selects the TLS version and cipher suite.
+  - Sends its random value and key_share.
+  - The key_share contains the server's ephemeral public key.
+  - Both sides can now calculate a shared secret.
+
+- Key Agreement:
+  - The client and server have different private keys.
+  - They exchange their ephemeral public keys.
+  - Each side uses its own private key and
+    the other side's public key.
+  - Both sides calculate the same shared secret.
+  - The private keys are never transmitted.
+
+#### 3. How to Generate the Same Symmetric Key
+
+- Public Parameters:
+  - Prime number: p = 23
+  - Generator: g = 5
+  - These values can be known by everyone.
+
+- Private Keys:
+  - Client private key: a = 6
+  - Server private key: b = 15
+  - Each side keeps its private key secret.
+
+- Public Key Calculation:
+  - Client: 5^6 mod 23 = 8
+  - Server: 5^15 mod 23 = 19
+
+- Public Key Exchange:
+  - Client sends public value 8.
+  - Server sends public value 19.
+  - Neither side sends its private key.
+
+- Shared Secret Calculation:
+  - Client: 19^6 mod 23 = 2
+  - Server: 8^15 mod 23 = 2
+  - Both sides get the same shared secret: 2.
+
+- Important Point:
+  - Different private keys can produce the same shared secret.
+  - The shared secret itself is never transmitted.
+
+#### 4. Shared Secret and Session Keys
+
+- Shared Secret:
+  - A secret value calculated independently by both sides.
+  - Used as input for generating encryption keys.
+
+- Important Point:
+  - Session keys are not directly sent over the network.
+  - Both sides independently derive matching keys.
+  - Symmetric encryption protects the application data.
+
+#### 5. Certificate Verification
+
+- Certificate:
+  - The server sends its digital certificate.
+  - The certificate contains the server's public key.
+  - It is normally signed by a Certificate Authority (CA).
+
+- CA Digital Signature:
+  - Created when the certificate is issued.
+  - The client verifies the CA signature.
+  - The client also checks the hostname,
+    certificate validity and trust chain.
+  - The CA does not sign the certificate again
+    for every HTTPS connection.
+
+- CertificateVerify:
+  - The server signs the handshake context
+    using its private key.
+  - The client verifies the signature
+    using the public key from the certificate.
+  - This proves possession of the matching private key.
+
+
+#### 6. Encrypted Application Data
+
+- After the required handshake checks:
+  - HTTP data is protected using symmetric encryption.
+  - The receiver decrypts data using the matching key.
+  - Encryption and integrity protection are provided.
+
+- Key Difference:
+  - Public-key techniques establish shared secrets
+    and authenticate the server.
+  - Symmetric encryption protects actual HTTP data.
+  - Expensive public-key operations are not repeated
+    for every HTTP request.
+
+### Practice
+
+- Reviewed the HTTPS communication process.
+- Drew the TLS handshake message flow.
+- Compared ClientHello and ServerHello.
+- Studied ephemeral public and private keys.
+- Calculated Diffie-Hellman public values manually.
+- Used p = 23 and g = 5 for the example.
+- Verified that both sides get Shared Secret = 2.
+- Studied CA digital signature verification.
+- Reviewed encrypted HTTP Application Data.
