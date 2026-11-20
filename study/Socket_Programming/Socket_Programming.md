@@ -68,10 +68,11 @@ Linux files and sockets can use many of the same system calls because both are m
 
 ## Summary
 
-Today, I learned the basic structure of socket programming and understood how servers and clients establish connections and communicate.
+- Today, I learned the basic structure of socket programming and understood how servers and clients establish connections and communicate.
+- I also practiced Linux file I/O to understand how file descriptors and system calls work.
 
-I also practiced Linux file I/O to understand how file descriptors and system calls work.
---------------------
+---
+
 ### 2026-11-18
 **Code I Wrote and Practiced:** `Soket_Programming_Code/11-18`
 
@@ -216,7 +217,9 @@ Today, I learned how sockets are created and how IP addresses and port numbers a
 I also understood the purpose of `sockaddr_in` padding and the relationship between TCP segments, MSS, and `read()`.
 
 Finally, I practiced IPv4 address conversion, network byte order conversion, and socket address binding in C.
---------------------
+
+---
+
 ### 2026-11-19 ~ 2026-11-20
 **Code I Wrote and Practiced:** `Soket_Programming_Code/11-19,Soket_Programming_Code/11-20`
 
