@@ -307,7 +307,7 @@ read() / write()    │
 close(cl_sock) ─────┘
 
 When the server stops: close(sv_sock)
-
+```
 
 - A loop allows the server to accept clients sequentially.
 - The current client must be handled before the application processes the next one.
@@ -319,7 +319,7 @@ TCP provides a **byte stream**. One `write()` call does **not** always match one
 
 For example, a client may write 100 bytes, but the server may read them in smaller pieces.
 
-text
+```text
 Client: write(..., 100)
 Server: read() → 40 bytes
         read() → 30 bytes
@@ -332,7 +332,7 @@ Server: read() → 40 bytes
 - When the expected length is known, the program can **track the total received bytes** and continue reading from the next buffer position.
 - `read()` returns `0` at EOF and `-1` on error.
 - Applications need a **fixed length, length header, or delimiter** to know where a complete message ends.
-
+```
 
 
 
