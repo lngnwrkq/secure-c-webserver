@@ -216,3 +216,160 @@ Today, I learned how sockets are created and how IP addresses and port numbers a
 I also understood the purpose of `sockaddr_in` padding and the relationship between TCP segments, MSS, and `read()`.
 
 Finally, I practiced IPv4 address conversion, network byte order conversion, and socket address binding in C.
+--------------------
+### 2026-11-19 ~ 2026-11-20
+**Code I Wrote and Practiced:** `Soket_Programming_Code/11-19,Soket_Programming_Code/11-20`
+
+## Today
+
+- Studied the layers of the TCP/IP protocol stack.
+- Learned how TCP servers and clients establish connections.
+- Understood the difference between listening sockets and connected sockets.
+- Studied the structure and limitations of an iterative server.
+- Practiced handling TCP byte-stream data with `read()` and `write()`.
+
+## What I Learned
+
+### 1. TCP/IP Protocol Stack
+
+The TCP/IP stack divides network communication into layers with different responsibilities.
+
+Application Layer
+       ↑
+Transport Layer (TCP / UDP)
+       ↑
+Internet Layer (IP)
+       ↑
+Link Layer
+
+
+### 2. Basic Structure of a TCP Server
+
+A TCP server waits for connection requests and exchanges data with connected clients.
+
+socket() → bind() → listen() → accept() → read()/write() → close()
+
+1. **`socket()` — Create a socket**  
+   Creates a TCP socket and returns a file descriptor.
+2. **`bind()` — Assign an address**  
+   Associates an IP address and port number with the server socket.
+3. **`listen()` — Prepare for connections**  
+   Makes the socket a listening socket and sets a `backlog` value for the pending connection queue.
+4. **`accept()` — Accept a connection**  
+   Accepts a pending connection and returns a **new connected socket** for that client.
+5. **`read()` / `write()` — Exchange data**  
+   Reads and writes data through the connected socket.
+6. **`close()` — Close a socket**  
+   Closes a socket when it is no longer needed.
+
+#### Listening Socket vs. Connected Socket
+
+- **Listening socket:** Waits for new client connections after `listen()`.
+- **Connected socket:** Returned by `accept()` and used to communicate with one specific client.
+- Closing a connected socket does not close the listening socket. The server can call `accept()` again.
+
+#### `listen()` and Backlog
+
+listen(sv_sock, 5);
+
+- `5` does **not** mean the server processes five clients at the same time.
+- On Linux, `backlog` mainly limits the queue of completed connections waiting for `accept()`. Kernel settings also affect its behavior.
+
+### 3. Basic Structure of a TCP Client
+
+socket() → connect() → read()/write() → close()
+
+1. **`socket()`**: Create a socket for communication.
+2. **`connect()`**: Request a connection using the server's IP address and port.
+3. **`read()` / `write()`**: Exchange data with the server.
+4. **`close()`**: Close the socket after communication.
+
+The server uses `bind()`, `listen()`, and `accept()` to receive connection requests. The client uses `connect()` to request a connection.
+
+### 4. Iterative Server
+
+An **iterative server handles one client at a time**, then moves to the next client.
+
+```text
+socket()
+   ↓
+bind()
+   ↓
+listen()
+   ↓
+accept() ←─────────┐
+   ↓                │
+read() / write()    │
+   ↓                │
+close(cl_sock) ─────┘
+
+When the server stops: close(sv_sock)
+
+
+- A loop allows the server to accept clients sequentially.
+- The current client must be handled before the application processes the next one.
+- Other connections may wait in the pending queue, but this server does not handle several clients at the same time.
+
+### 5. TCP Byte Streams and Partial Reads
+
+TCP provides a **byte stream**. One `write()` call does **not** always match one `read()` call.
+
+For example, a client may write 100 bytes, but the server may read them in smaller pieces.
+
+text
+Client: write(..., 100)
+Server: read() → 40 bytes
+        read() → 30 bytes
+        read() → 30 bytes
+        Total     100 bytes
+
+
+- The third argument in `read(fd, buf, 100)` is the **maximum number of bytes requested**, not a promise to return 100 bytes.
+- The return value of `read()` is the number of bytes actually read by that call.
+- When the expected length is known, the program can **track the total received bytes** and continue reading from the next buffer position.
+- `read()` returns `0` at EOF and `-1` on error.
+- Applications need a **fixed length, length header, or delimiter** to know where a complete message ends.
+
+
+
+
+## Practice
+
+### 2026-11-19 | Built a TCP Echo Server from Scratch
+
+- Wrote a TCP echo server and client by myself.
+- Used `socket()`, `bind()`, `listen()`, `accept()`, and `connect()` to establish connections.
+- Used `read()` and `write()` to receive a message and send it back to the client.
+- Practiced an iterative server structure that handles clients one by one.
+
+**Code I Wrote and Practiced:** `Client.c`, `Server.c`
+
+### 2026-11-20 | Improved the Echo Client and Started a Calculator Server
+
+- Studied the limitations of calling `read()` only once in the original echo client.
+- Improved the client by calling `read()` repeatedly and **tracking the total number of received bytes**.
+- Used the saved byte count as a **buffer offset**, so newly received bytes are stored after previously received data.
+- Designed and wrote a TCP calculator server and client from scratch.
+- Used `strcat()` to build the input message, then `strtok()` and `atoi()` to split and convert operands on the server.
+- Used `switch()` to build the calculation logic.
+- Practiced debugging C programs using GDB.
+- Used `break`, `run`, `next`, `print`, and `continue` commands.
+- Set breakpoints and executed code step by step.
+- Tracked changes in the `temp` and `op` arrays to verify how `fgets()` and `strcat()` work.
+- Analyzed the program's execution flow and string handling through debugging.
+- **Completed the first calculation exchange**, but the second request and error handling are still incomplete.
+
+
+**Code I Wrote and Practiced:** `Client_V2.c`, `Calculator_cl.c`, `Calculator_sv.c` *(Calculator project incomplete)*
+
+## Next Plan
+
+### 2026-11-21 | Planned
+
+- Complete the TCP calculator server and client.
+- Fix the issue where operand prompts appear without waiting for input during the second calculation.
+- Check `scanf()` / `fgets()` input handling and the server's connection closing behavior.
+- Write concept notes about why one `read()` call may not receive a complete TCP message.
+- Review TCP byte streams, partial reads, cumulative byte counts, and buffer offsets.
+- Test calculation results and organize the source code.
+- Organize and clean up the calculator server code.
