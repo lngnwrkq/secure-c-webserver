@@ -338,7 +338,7 @@ Server: read() → 40 bytes
 
 ## Practice
 
-### 2026-11-19 | Built a TCP Echo Server from Scratch
+## 2026-11-19 | Built a TCP Echo Server from Scratch
 
 - Wrote a TCP echo server and client by myself.
 - Used `socket()`, `bind()`, `listen()`, `accept()`, and `connect()` to establish connections.
@@ -347,7 +347,7 @@ Server: read() → 40 bytes
 
 **Code I Wrote and Practiced:** `Client.c`, `Server.c`
 
-### 2026-11-20 | Improved the Echo Client and Started a Calculator Server
+## 2026-11-20 | Improved the Echo Client and Started a Calculator Server
 
 - Studied the limitations of calling `read()` only once in the original echo client.
 - Improved the client by calling `read()` repeatedly and **tracking the total number of received bytes**.
@@ -367,7 +367,7 @@ Server: read() → 40 bytes
 
 ## Next Plan
 
-### 2026-11-21 | Planned
+## 2026-11-21 | Planned
 
 - Complete the TCP calculator server and client.
 - Fix the issue where operand prompts appear without waiting for input during the second calculation.
@@ -376,3 +376,725 @@ Server: read() → 40 bytes
 - Review TCP byte streams, partial reads, cumulative byte counts, and buffer offsets.
 - Test calculation results and organize the source code.
 - Organize and clean up the calculator server code.
+
+---
+
+### 2026-11-21
+
+**Code I Wrote and Practiced:** `Soket_Programming_Code/11-20, 11-21`
+
+## Today
+
+- Reviewed the communication structure of TCP echo servers and clients.
+- Studied TCP byte streams and partial data reception using `read()`.
+- Compared the echo client from the textbook with my improved `Client_V2.c`.
+- Analyzed the communication protocol of the calculator server in the textbook.
+- Compared the textbook's calculator implementation with my own implementation.
+- Reviewed data sizes, buffer offsets, and pointer arithmetic.
+
+## What I Learned
+
+# 1. TCP Echo Server
+
+## 1.1. Textbook Implementation
+
+### Basic Structure
+
+A TCP echo server receives data from a client and sends the same data back to the client.
+
+Communication process:
+
+1. The server calls `socket()`, `bind()`, and `listen()`.
+2. The server accepts a client connection using `accept()`.
+3. The client sends a message using `write()`.
+4. The server receives the message using `read()`.
+5. The server sends the received data back using `write()`.
+6. The client receives the returned data using `read()`.
+
+### Limitations of the Original Echo Client
+
+TCP is a byte-stream protocol. Therefore, one `write()` call does not always match one `read()` call.
+
+For example, even if a client sends 100 bytes, the server may receive the data in several parts.
+
+```text
+write() : 100 bytes
+
+read()  : 40 bytes
+read()  : 30 bytes
+read()  : 30 bytes
+
+Total   : 100 bytes
+```
+
+If the client calls `read()` only once, it may not receive the complete message.
+
+### Improved Echo Client in the Textbook
+
+The textbook solves this problem by repeatedly calling `read()` until the expected number of bytes has been received.
+
+```c
+str_len = write(sock, message, strlen(message));
+
+recv_len = 0;
+
+while (recv_len < str_len)
+{
+    recv_cnt = read(
+        sock,
+        &message[recv_len],
+        BUF_SIZE - 1
+    );
+
+    if (recv_cnt == -1)
+        error_handling("read() error!");
+
+    recv_len += recv_cnt;
+}
+
+message[recv_len] = '\0';
+```
+
+**Main Variables**
+
+- `str_len`: Number of bytes actually sent by the `write()` call.
+- `recv_len`: Total number of bytes received so far.
+- `recv_cnt`: Number of bytes received by the current `read()` call.
+
+**Core Principle**
+
+The program uses `recv_len` to remember how many bytes have already been received.
+
+The next `read()` call starts writing data at `&message[recv_len]`.
+
+This prevents newly received data from overwriting previous data.
+
+The receiving loop ends when `recv_len` reaches `str_len`.
+
+---
+
+## 1.2. My Implementation
+
+**Code:** `Client_V2.c`
+
+I improved the echo client by managing the total number of received bytes and using buffer offsets.
+
+The main idea is:
+
+1. Track the total number of bytes received.
+2. Move the next writing position after the previously received data.
+3. Request only the remaining number of bytes.
+4. Repeat until the expected amount of data has been received.
+
+The following example shows the main idea of my implementation.
+
+```c
+int check_p = 0;
+
+while (check_p < expected_size)
+{
+    int len = read(
+        sock,
+        message + check_p,
+        expected_size - check_p
+    );
+
+    if (len <= 0)
+        break;
+
+    check_p += len;
+}
+```
+
+*This example explains the buffer-offset logic I implemented. Some variable names and details may differ from my original source code.*
+
+### 1. Buffer Offset: `message + check_p`
+
+This moves the buffer pointer by the number of bytes already received.
+
+As a result, new data is stored immediately after the previous data.
+
+### 2. Remaining Size: `expected_size - check_p`
+
+This calculates how many more bytes need to be received.
+
+For example, if the expected size is 100 bytes and 40 bytes have already been received, the next `read()` call requests at most 60 bytes.
+
+---
+
+## 1.3. Comparison: Textbook vs. My Implementation
+
+| Feature | Textbook | My Implementation |
+| --- | --- | --- |
+| Received byte counter | `recv_len` | `check_p` |
+| Buffer offset | `message + recv_len` | `message + check_p` |
+| Read request size | `BUF_SIZE - 1` | Remaining expected bytes |
+| Loop condition | `recv_len < str_len` | `check_p < expected_size` |
+| Partial read handling | Repeated `read()` | Repeated `read()` |
+| Buffer management | Fixed maximum size per call | Adjusted remaining size |
+| EOF handling | No explicit handling for `read() == 0` | Checks `read() <= 0` |
+
+### Difference 1. The Third Argument of `read()`
+
+The textbook uses:
+
+```c
+read(sock, &message[recv_len], BUF_SIZE - 1);
+```
+
+The important point is that the buffer position changes, but the maximum read request size remains the same.
+
+For example:
+
+```text
+BUF_SIZE = 1024
+
+Already received = 100 bytes
+
+Next buffer position = message[100]
+
+Textbook's next read request = 1023 bytes
+```
+
+However, the available space starting from `message[100]` is smaller than 1023 bytes.
+
+If more data than expected arrives, the program may write beyond the buffer boundary.
+
+The textbook's code can work correctly when the echo server returns exactly the expected data.
+
+However, it is not a fully safe approach when unexpected data is received.
+
+### Difference 2. Calculating the Remaining Bytes
+
+My approach uses:
+
+```c
+read(sock, message + check_p, expected_size - check_p);
+```
+
+Example:
+
+```text
+Expected size: 100 bytes
+
+First read():
+Received = 40 bytes
+check_p = 40
+
+Second read() request:
+100 - 40 = 60 bytes
+
+Second read():
+Received = 30 bytes
+check_p = 70
+
+Third read() request:
+100 - 70 = 30 bytes
+```
+
+This approach manages both the buffer position and the remaining number of bytes.
+
+It prevents the program from requesting more data than the expected remaining message length.
+
+The program must still ensure that `expected_size` does not exceed the actual buffer capacity.
+
+### Difference 3. Handling `read() == 0`
+
+The textbook checks whether `read()` returns `-1`.
+
+```c
+if (recv_cnt == -1)
+    error_handling("read() error!");
+```
+
+However, it does not explicitly handle a return value of `0`.
+
+For a TCP socket, `read()` returning `0` means the peer has finished sending data and the receiving side has reached EOF.
+
+If the loop is still waiting for additional bytes, it may continue indefinitely because the received byte counter does not increase.
+
+The return values should be handled as follows:
+
+- `read() > 0`: Data was successfully received.
+- `read() == 0`: The peer has closed its sending side.
+- `read() == -1`: An error occurred.
+
+### Conclusion: Echo Server
+
+By analyzing the textbook and my implementation, I learned two important concepts.
+
+1. TCP applications need to manage the total number of received bytes because partial reads can occur.
+2. Safe buffer management requires checking both the next writing position and the remaining buffer space.
+
+I also understood the difference between two expressions:
+
+- `BUF_SIZE - 1`: Reserves space for the null terminator.
+- `expected_size - check_p`: Calculates the remaining number of bytes to receive.
+
+These expressions serve different purposes.
+
+---
+
+# 2. TCP Calculator Server
+
+## 2.1. Textbook Implementation
+
+The calculator server in the textbook sends calculation requests using **binary data instead of text strings**.
+
+### Communication Protocol
+
+The textbook organizes the request message in the following order:
+
+```text
+[Operand Count] [Operand 1] ... [Operand N] [Operator]
+      1B           4B × N                       1B
+```
+
+The total message size is:
+
+```text
+1 + 4 × N + 1
+
+= 4N + 2 bytes
+```
+
+- Operand count: 1 byte
+- Each operand: 4 bytes
+- Operator: 1 byte
+
+For example, if there are three operands:
+
+```text
+[3] [10] [20] [30] [+]
+ 1    4    4    4    1   bytes
+
+Total = 14 bytes
+```
+
+### Why Is the Operand Count Stored in One Byte?
+
+The textbook converts the operand count into a `char` value.
+
+```c
+opmsg[0] = (char)opnd_cnt;
+```
+
+Although an `int` usually occupies 4 bytes, a small integer value does not always require 4 bytes of storage.
+
+A `char` can also store integer values.
+
+Therefore, the textbook stores the operand count in one byte, assuming the count is within the supported range.
+
+### Storing Operands in a Character Array
+
+The textbook uses a character array to store binary data.
+
+```c
+#define OPSZ 4
+
+char opmsg[BUF_SIZE];
+```
+
+Each operand is stored in a 4-byte area.
+
+The textbook uses a technique similar to:
+
+```c
+scanf("%d", (int*)&opmsg[1 + i * OPSZ]);
+```
+
+The memory structure is:
+
+```text
+opmsg[0]     : Operand count (1 byte)
+
+opmsg[1~4]   : First operand (4 bytes)
+
+opmsg[5~8]   : Second operand (4 bytes)
+
+opmsg[9~12]  : Third operand (4 bytes)
+
+opmsg[13]    : Operator (1 byte)
+```
+
+The pointer is cast to `int*` so that the program can store an integer in the selected memory area.
+
+This technique depends on assumptions about memory alignment and integer representation. A more portable implementation would use `memcpy()` to place integer bytes into the character buffer.
+
+### Calculating the Transmission Size
+
+The textbook uses:
+
+```c
+opnd_cnt * OPSZ + 2
+```
+
+Since `OPSZ = 4`:
+
+```text
+opnd_cnt × 4 + 2
+
+= 1 byte for the operand count
++ 4 bytes for each operand
++ 1 byte for the operator
+```
+
+For three operands:
+
+```text
+3 × 4 + 2 = 14 bytes
+```
+
+This was an important part of understanding the textbook code.
+
+The additional `2` represents the operand count and the operator, which each occupy one byte.
+
+Unlike a fixed-size message, this approach sends only the required amount of data.
+
+### Receiving Data on the Server
+
+The server first receives the operand count.
+
+```c
+read(cl_sock, &opnd_cnt, 1);
+```
+
+After receiving the count, the server can calculate how much data remains.
+
+```text
+Remaining data size = opnd_cnt × 4 + 1
+```
+
+The operand count has already been received.
+
+Therefore, the server only needs to receive the operands and the operator.
+
+The server then processes the data and performs the calculation.
+
+### Sending the Calculation Result
+
+The server sends the result as a binary integer.
+
+```c
+write(cl_sock, &result, sizeof(result));
+```
+
+On a system where `int` occupies 4 bytes, the result is transmitted as 4 bytes.
+
+---
+
+## 2.2. My Implementation
+
+**Code:** `Calculator_cl.c`, `Calculator_sv.c`
+
+Unlike the textbook, I designed my calculator server to send operands and operators as a single text string.
+
+### Communication Protocol
+
+The client combines operands and an operator into one string separated by spaces.
+
+For example:
+
+```text
+Operand count: 3
+
+Operand 1: 10
+Operand 2: 20
+Operand 3: 30
+
+Operator: +
+
+Message: "10 20 30 +"
+```
+
+The client sends a fixed-size 100-byte message.
+
+```c
+write(sock, op, 100);
+```
+
+The server receives the complete 100-byte request using a loop.
+
+```c
+while (check_p < 100)
+{
+    str_len = read(
+        cl_sock,
+        message + check_p,
+        100 - check_p
+    );
+
+    if (str_len <= 0)
+        break;
+
+    check_p += str_len;
+}
+```
+
+### Building the Message on the Client
+
+The client receives operands using `fgets()` and appends them to the message buffer using `strcat()`.
+
+```c
+strcat(op, temp);
+strcat(op, " ");
+```
+
+Finally, the operator is added.
+
+```c
+strcat(op, operator);
+```
+
+This creates a complete calculation request as a text string.
+
+### Parsing the Message on the Server
+
+The textbook stores operands directly as binary integers.
+
+My implementation instead separates the received text into individual tokens.
+
+I used `strtok()` to split the message using spaces.
+
+```c
+char *ptr = strtok(message, " ");
+```
+
+Each operand is then converted from a string into an integer.
+
+```c
+op[i] = atoi(ptr);
+ptr = strtok(NULL, " ");
+```
+
+The program counts the operands until it finds an operator.
+
+### Performing Calculations
+
+I used a `switch` statement to select the arithmetic operation.
+
+**Addition**
+
+The result starts at 0, and each operand is added.
+
+**Multiplication**
+
+The result starts at 1 because multiplying by 0 would always produce 0.
+
+**Subtraction**
+
+The result starts with the first operand, and the remaining operands are subtracted one by one.
+
+### Sending and Receiving the Result
+
+The server sends the result as a binary integer, similar to the textbook.
+
+```c
+write(cl_sock, &sum, sizeof(sum));
+```
+
+On the client side, I implemented a loop to handle partial reads.
+
+```c
+while (check_p < 4)
+{
+    len = read(
+        sock,
+        (char*)INT_op + check_p,
+        4 - check_p
+    );
+
+    if (len <= 0)
+        break;
+
+    check_p += len;
+}
+```
+
+### Why Did I Use `(char*)`?
+
+The `INT_op` array contains integers.
+
+When pointer arithmetic is performed on an `int*`, the pointer moves by the size of an integer.
+
+However, TCP data is received as bytes.
+
+Casting the pointer to `char*` allows the program to move the memory address one byte at a time.
+
+For example:
+
+```text
+check_p = 2
+
+INT_op + 2
+→ Moves 8 bytes
+  (if sizeof(int) is 4)
+
+(char*)INT_op + 2
+→ Moves exactly 2 bytes
+```
+
+This allows each new `read()` call to store data immediately after the bytes received earlier.
+
+### Repeated Calculations
+
+I designed my calculator server to process multiple calculations using a single TCP connection.
+
+```text
+socket()
+   ↓
+bind()
+   ↓
+listen()
+   ↓
+accept()
+   ↓
+while (1)
+   ├── read()
+   ├── Parse message
+   ├── Calculate
+   └── write()
+   ↓
+close()
+```
+
+The client can send additional calculation requests without creating a new connection each time.
+
+I also added a termination feature that allows the client to send `q` to request shutdown.
+
+---
+
+## 2.3. Comparison: Textbook vs. My Implementation
+
+| Feature | Textbook | My Implementation |
+| --- | --- | --- |
+| Data format | Binary data | Text string |
+| Operand count | Stored in the first byte | Counted while parsing tokens |
+| Operand storage | 4 bytes per integer | Numbers converted into strings |
+| Operator storage | Final byte | Final string token |
+| Request size | `4N + 2` bytes | Fixed 100 bytes |
+| Data separation | Byte positions and sizes | Spaces and `strtok()` |
+| Integer conversion | Not needed for binary operands | Uses `atoi()` |
+| Result transmission | Binary integer | Binary integer |
+| Result reception | Integer result | Repeated reads with byte offsets |
+| Main advantage | Efficient data transmission | Easy-to-read and debug messages |
+
+### Difference 1. Binary Data vs. Text Strings
+
+**Textbook**
+
+The textbook stores and sends integer values directly as binary data.
+
+This avoids the need to convert numbers into strings and parse them again.
+
+**My Implementation**
+
+My calculator sends a readable string such as:
+
+```text
+10 20 30 +
+```
+
+The server uses `strtok()` and `atoi()` to process the request.
+
+This requires additional string operations but makes the message easier to inspect during debugging.
+
+### Difference 2. Variable-Length vs. Fixed-Length Messages
+
+**Textbook**
+
+```c
+opnd_cnt * OPSZ + 2
+```
+
+The request size depends on the number of operands.
+
+The program sends only the number of bytes required for the request.
+
+**My Implementation**
+
+```c
+write(sock, op, 100);
+```
+
+The client always attempts to send 100 bytes.
+
+This simplifies the protocol but may waste bandwidth when the actual message is short.
+
+The program also needs to validate the input length to prevent buffer-related problems.
+
+### Difference 3. How the Server Determines the Operand Count
+
+**Textbook**
+
+The operand count is stored in the first byte.
+
+Therefore, the server knows how many operands to receive after reading the count.
+
+**My Implementation**
+
+The server separates the message into tokens using `strtok()`.
+
+It counts the operand tokens until it finds an arithmetic operator.
+
+### Difference 4. Debugging and Readability
+
+**Textbook**
+
+The binary protocol is more compact and avoids unnecessary string conversion.
+
+However, binary data is harder to inspect directly as readable text.
+
+**My Implementation**
+
+The text-based protocol makes it easier to inspect received messages using GDB or Wireshark.
+
+For example:
+
+```text
+message = "10 20 30 +"
+```
+
+However, additional validation is needed for string lengths, token formats, and integer conversion errors.
+
+---
+
+## 2.4. Further Improvements
+
+Both programs were developed as learning exercises.
+
+Several improvements are still needed for more reliable communication.
+
+- Handle `read() == 0` correctly when the peer closes its sending side.
+- Check whether `write()` actually sends all requested bytes.
+- Validate operands and arithmetic operators.
+- Prevent buffer overflow during string concatenation.
+- Consider integer size and network byte order when transmitting binary data.
+- Distinguish between client disconnection and server termination.
+- Verify that the expected number of bytes has been received before processing a message.
+
+---
+
+## Summary
+
+TCP provides a byte stream, so one `write()` call does not always correspond to one `read()` call.
+
+To receive complete data reliably, a program must track the total number of received bytes and calculate how many bytes remain.
+
+While reviewing the textbook's echo client, I noticed that the buffer offset changes during repeated reads, but the maximum read request size remains unchanged.
+
+This helped me understand why both the receiving position and the remaining buffer capacity should be considered.
+
+I also studied two different approaches to implementing a TCP calculator server.
+
+The textbook uses a binary protocol with the following message size:
+
+```text
+1 + 4N + 1 = 4N + 2 bytes
+```
+
+My implementation uses a fixed-size 100-byte text message and parses operands using `strtok()` and `atoi()`.
+
+By comparing these implementations, I learned that **TCP applications must define their own message formats, lengths, and boundaries**.
+
+The most important lesson was understanding not only how to send and receive data, but also why the communication protocol must be carefully designed.
